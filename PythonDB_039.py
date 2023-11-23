@@ -45,9 +45,12 @@ entryInputING = ttk.Entry(inputFrame, text="MASUKKAN NILAI B INGGRIS")
 entryInputING.pack(padx=10, pady=5, fill="x", expand=True)
 
 def klikButton ():
+    NAMA = entryInputNAMA.get()
     BIOLOGI = entryInputBIO.get()
     FISIKA = entryInputFISIKA.get()
     ING = entryInputING.get()
+    
+    HASIL = " "
     
     if BIOLOGI > FISIKA and BIOLOGI > ING:
         HASIL = "KEDOKTERAN"
@@ -56,31 +59,52 @@ def klikButton ():
     elif ING > BIOLOGI and ING > FISIKA:
         HASIL = "BAHASA"
     else:
-        HASIL = "NILAI YANG DIINPUTKAN MEMILIKI BOBOT SAMA"
+        return "NILAI YANG DIINPUTKAN MEMILIKI BOBOT SAMA"
     
-    messagebox.showinfo("HASIL PREDIKSI :", f'{HASIL}')
-
-def simpan_data_ke_sqlite(nilai1,nilai2, prodi_terpilih):
     # Membuka atau membuat database SQLite
-    conn = sqlite3.connect("Windya1.db")
+    conn = sqlite3.connect("data.db")
     cursor = conn.cursor()
     
     # Membuat tabel jika belum ada
     cursor.execute('''CREATE TABLE IF NOT EXISTS hasil_prediksi
                     (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                     NAMA TEXT,
-                    BIOLOGI REAL, 
-                    FISIKA REAL,
-                    ING REAL,
+                    BIOLOGI INT, 
+                    FISIKA INT,
+                    ING INT,
                     HASIL_PREDIKSI TEXT)''')
     
     # Memasukkan data mata pelajaran ke dalam tabel
-    cursor.execute("INSERT INTO NILAI (NAMA, BIOLOGI, FISIKA, ING, HASIL_PREDIKSI) VALUES (?, ?, ?, ?, ?)",
+    cursor.execute("INSERT INTO hasil_prediksi (NAMA, BIOLOGI, FISIKA, ING, HASIL_PREDIKSI) VALUES (?, ?, ?, ?, ?)",
     (NAMA, BIOLOGI, FISIKA, ING, HASIL))
     
     # Melakukan commit dan menutup koneksi
     conn.commit()
     conn.close()
+    
+    messagebox.showinfo("HASIL PREDIKSI :", f'{HASIL}')
+
+# def simpan_data_ke_sqlite(NAMA,BIOLOGI, FISIKA, ING, HASIL_PREDIKSI):
+    # # Membuka atau membuat database SQLite
+    # conn = sqlite3.connect("data.db")
+    # cursor = conn.cursor()
+    
+    # # Membuat tabel jika belum ada
+    # cursor.execute('''CREATE TABLE IF NOT EXISTS hasil_prediksi
+    #                 (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    #                 NAMA TEXT,
+    #                 BIOLOGI INT, 
+    #                 FISIKA INT,
+    #                 ING INT,
+    #                 HASIL_PREDIKSI TEXT)''')
+    
+    # # Memasukkan data mata pelajaran ke dalam tabel
+    # cursor.execute("INSERT INTO NILAI (NAMA, BIOLOGI, FISIKA, ING, HASIL_PREDIKSI) VALUES (?, ?, ?, ?, ?)",
+    # (NAMA, BIOLOGI, FISIKA, ING, HASIL))
+    
+    # # Melakukan commit dan menutup koneksi
+    # conn.commit()
+    # conn.close()
 
 buttonSubmit = ttk.Button(inputFrame, text="PREDIKSI SEKARANG", command=klikButton)
 buttonSubmit.pack(padx=10, pady=10, fill="x", expand=True)
