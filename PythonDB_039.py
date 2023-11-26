@@ -12,11 +12,11 @@ uiApp.title("PILIHAN PRODI")
 inputFrame = tk.Frame(uiApp)
 inputFrame.pack(padx=10,fill="x", expand=True)
 
-#make label
+#Membuat label nilai siswa di tkinter
 inputLabel = ttk.Label(inputFrame, text="NILAI SISWA")
 inputLabel.pack(padx=10, pady=10, fill="x", expand=True)
 
-#1. Membuat input nama dan nilai mapel
+#1. Membuat input/ entry nama dan nilai mapel
 labelInputNAMA = ttk.Label(inputFrame, text="MASUKKAN NAMA SISWA")
 labelInputNAMA.pack(padx=10, pady=5, fill="x", expand=True)
 
@@ -52,6 +52,7 @@ def klikButton ():
     
     HASIL = " "
     
+    #Menetapkan kondisi nilai untuk pilihan prodi yang diinginkan(jika, maka)
     if BIOLOGI > FISIKA and BIOLOGI > ING:
         HASIL = "KEDOKTERAN"
     elif FISIKA > BIOLOGI and FISIKA > ING:
@@ -65,7 +66,7 @@ def klikButton ():
     conn = sqlite3.connect("data.db")
     cursor = conn.cursor()
     
-    # Membuat tabel jika belum ada
+    # Membuat tabel jika belum ada (tabel hasil_prediksi)
     cursor.execute('''CREATE TABLE IF NOT EXISTS hasil_prediksi
                     (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                     NAMA TEXT,
@@ -84,6 +85,7 @@ def klikButton ():
     
     messagebox.showinfo("HASIL PREDIKSI :", f'{HASIL}')
 
+#Button tkinter untuk submit nilai
 buttonSubmit = ttk.Button(inputFrame, text="PREDIKSI SEKARANG", command=klikButton)
 buttonSubmit.pack(padx=10, pady=10, fill="x", expand=True)
 
